@@ -23,7 +23,7 @@ db_object=tw_user(con_str,consumer_key,consumer_secret,access_token,access_token
 app.layout = html.Div([
     html.H2('Twitter followers tracker'),
     html.Div([
-    	html.Div(children=[dcc.Input(id='tw_user',placeholder=' e.g @aestebanp',type='text')],style={'display':'inline-block'}),
+    	html.Div(children=[dcc.Input(id='tw_user',placeholder=' e.g @aestebanpl',type='text')],style={'display':'inline-block'}),
     	html.Div(children=[html.Button('Check',id='check_user',n_clicks=0)],style={'display':'inline-block'})    	  
     ]),
     

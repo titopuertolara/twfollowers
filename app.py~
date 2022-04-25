@@ -12,11 +12,11 @@ external_stylesheets = ['https://codepen.io/chriddyp/pen/bWLwgP.css']
 app = Dash(__name__, external_stylesheets=external_stylesheets,suppress_callback_exceptions=True,title='Followers tracker')
 
 server = app.server
-con_str='postgresql://wvhinoanhovbsk:3006a4afc14bd3cd8dd89f0c2ad87ea3c7d02f193c25fd6d3bc5a760af736611@ec2-3-229-252-6.compute-1.amazonaws.com:5432/d9lo2fp4iaggmf'
-consumer_key = "lPKCdHNPrV77RRouvZbv3w04y"
-consumer_secret = "dDpDFoopKZvSWhfSc1iTTkKp0OR4eQK8zFdu5M6VgsGfmms9OW"
-access_token = "728052118893023233-il6fQLx7xCVLhb3EfpYYwqwnw6SOe1n"
-access_token_secret = "Atr11smgRXGPF6Rm6YfvZvrwmOfXXQ6Rz3029dFhPCfaD"
+con_str=''
+consumer_key = ""
+consumer_secret = ""
+access_token = ""
+access_token_secret = ""
 
 db_object=tw_user(con_str,consumer_key,consumer_secret,access_token,access_token_secret)
 
