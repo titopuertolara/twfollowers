@@ -12,26 +12,27 @@ external_stylesheets = ['https://codepen.io/chriddyp/pen/bWLwgP.css']
 app = Dash(__name__, external_stylesheets=external_stylesheets,suppress_callback_exceptions=True,title='Followers tracker')
 
 server = app.server
-con_str=''
-consumer_key = ""
-consumer_secret = ""
-access_token = ""
-access_token_secret = ""
+con_str='postgresql://uivgpieavyjuzl:a3ec86962f8155dc81569155dec1a09cc1d0d771edab03369b0804b60a56de5a@ec2-54-204-56-171.compute-1.amazonaws.com:5432/d99rk0mn9bh6ad'
+consumer_key = "lPKCdHNPrV77RRouvZbv3w04y"
+consumer_secret = "dDpDFoopKZvSWhfSc1iTTkKp0OR4eQK8zFdu5M6VgsGfmms9OW"
+access_token = "728052118893023233-il6fQLx7xCVLhb3EfpYYwqwnw6SOe1n"
+access_token_secret = "Atr11smgRXGPF6Rm6YfvZvrwmOfXXQ6Rz3029dFhPCfaD"
 
 db_object=tw_user(con_str,consumer_key,consumer_secret,access_token,access_token_secret)
 
 app.layout = html.Div([
     html.H2('Twitter followers tracker'),
     html.Div([
-    	html.Div(children=[dcc.Input(id='tw_user',placeholder=' e.g @aestebanp',type='text')],style={'display':'inline-block'}),
+    	html.Div(children=[dcc.Input(id='tw_user',placeholder=' e.g @aestebanpl',type='text')],style={'display':'inline-block'}),
     	html.Div(children=[html.Button('Check',id='check_user',n_clicks=0)],style={'display':'inline-block'})    	  
     ]),
     
     html.Div(id='tracker-div'),
     html.Div(id='track-answ-div'),
+    html.Div(id='user-div-name',style={'text-align': 'center','font-weight':'bold','font-size':'xx-large'}),
     dcc.Loading(
                     id="loading-2",
-                    children=[html.Div(dcc.Graph(id='user_plot'))],
+                    children=[html.Div(dcc.Graph(id='user_plot')),html.Div(dcc.Graph(id='variation_plot'))],
                     type="circle",
                 ),
     
@@ -54,6 +55,8 @@ app.layout = html.Div([
               Output('user-table','columns'),
               Output('user-table','data'),
               Output('answer-captcha','data'),
+				  Output('variation_plot','figure'),
+				  Output('user-div-name','children'),
 
               [Input('check_user','n_clicks'),
               State('tw_user','value')])
@@ -77,12 +80,13 @@ def render_user(n_clicks,user):
 							dcc.Input(id='cap-answ',type='number',placeholder=f'How much is {a}+{b} ?'),
 							response])
 							
-			return r,fig,cols,dummy,math_answer
+			return r,fig,cols,dummy,math_answer,fig,''
 		else:
 			fig,table_dict=db_object.plot_followers(user)
-			return response,fig,table_dict['cols'],table_dict['content'],math_answer
+			fig_var=db_object.plot_variation()
+			return response,fig,table_dict['cols'],table_dict['content'],math_answer,fig_var,user
 	else:
-		return '',fig,cols,dummy,math_answer
+		return '',fig,cols,dummy,math_answer,fig,''
 		
 @app.callback(Output('track-answ-div','children'),
               Output('tracker-div','style'),
