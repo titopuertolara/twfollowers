@@ -29,9 +29,10 @@ app.layout = html.Div([
     
     html.Div(id='tracker-div'),
     html.Div(id='track-answ-div'),
+    html.Div(id='user-div-name',style={'text-align': 'center','font-weight':'bold','font-size':'xx-large'}),
     dcc.Loading(
                     id="loading-2",
-                    children=[html.Div(dcc.Graph(id='user_plot'))],
+                    children=[html.Div(dcc.Graph(id='user_plot')),html.Div(dcc.Graph(id='variation_plot'))],
                     type="circle",
                 ),
     
@@ -54,6 +55,8 @@ app.layout = html.Div([
               Output('user-table','columns'),
               Output('user-table','data'),
               Output('answer-captcha','data'),
+				  Output('variation_plot','figure'),
+				  Output('user-div-name','children'),
 
               [Input('check_user','n_clicks'),
               State('tw_user','value')])
@@ -77,12 +80,13 @@ def render_user(n_clicks,user):
 							dcc.Input(id='cap-answ',type='number',placeholder=f'How much is {a}+{b} ?'),
 							response])
 							
-			return r,fig,cols,dummy,math_answer
+			return r,fig,cols,dummy,math_answer,fig,''
 		else:
 			fig,table_dict=db_object.plot_followers(user)
-			return response,fig,table_dict['cols'],table_dict['content'],math_answer
+			fig_var=db_object.plot_variation()
+			return response,fig,table_dict['cols'],table_dict['content'],math_answer,fig_var,user
 	else:
-		return '',fig,cols,dummy,math_answer
+		return '',fig,cols,dummy,math_answer,fig,''
 		
 @app.callback(Output('track-answ-div','children'),
               Output('tracker-div','style'),

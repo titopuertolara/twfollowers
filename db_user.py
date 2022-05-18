@@ -65,17 +65,40 @@ class tw_user:
 			return False
 	def plot_followers(self,user):
 		
-		df=pd.read_sql_query("SELECT * FROM trackerdb",self.engine)
-		df=df[df['usertw']==user]
-		dates=df['datetw'].tolist()
-		followers=df['followers'].tolist()
+		self.df=pd.read_sql_query("SELECT * FROM trackerdb",self.engine)
+		self.df=self.df[self.df['usertw']==user]
+		self.dates=self.df['datetw'].tolist()
+		self.followers=self.df['followers'].tolist()
 		
 		fig=go.Figure()
 		
-		fig.add_trace(go.Scatter(x=dates,y=followers,mode='markers+lines',name=user))
-		fig.update_layout(title=f'Followers for {user}')
+		fig.add_trace(go.Scatter(x=self.dates,y=self.followers,mode='markers+lines',name=user))
+		fig.update_layout(title=f'Followers')
 		
-		return fig,{'content':df.to_dict('records'),'cols':[{'name':i,'id':i} for i in df.columns]}
+		return fig,{'content':self.df.to_dict('records'),'cols':[{'name':i,'id':i} for i in self.df.columns]}
+	
+	def plot_variation(self):
+		
+		fig=go.Figure()
+		
+		variation=[]
+		for i in range(len(self.followers)):
+			try:
+				variation.append(self.followers[i]-self.followers[i-1])
+			except:
+				pass
+		variation[0]=0
+			
+		fig.add_trace(go.Bar(x=[i.split()[0] for i in self.dates],y=variation,text=variation,textposition='auto'))
+		fig.update_xaxes(type='category')
+		fig.update_layout(title='New Followers')
+		
+		
+		return fig
+		 
+	
+
+		 
 	
 		
 		
