@@ -34,7 +34,7 @@ for user in users:
 	cursor.close()
 
 
-forbiden_users=['German_Vargas','ZelenskyyUa','EnriquePenalosa','realamberheard','FranciaMarquezM','UCompensar','marcollinasvolp','aestebanpl','AlvaroUribeVel']
+forbiden_users=['FicoGutierrez','Enrique_GomezM','sergio_fajardo','JohnMiltonR_','German_Vargas','ZelenskyyUa','EnriquePenalosa','realamberheard','FranciaMarquezM','UCompensar','marcollinasvolp','AlvaroUribeVel']
 for user in users:
 	if user not in forbiden_users:
 		user_df=pd.read_sql_query(f"""SELECT * FROM trackerdb WHERE usertw='{user}'""",engine)
@@ -56,7 +56,7 @@ for user in users:
 		#print(dates_list)
 		#print(nf_list)
 		fig=go.Figure()
-		fig.add_trace(go.Scatter(x=dates_list,y=nf_list,text=nf_list,mode='lines+markers+text',textposition='top center'))
+		fig.add_trace(go.Scatter(x=dates_list,y=nf_list,text=nf_list,mode='lines+markers'))
 		fig.update_yaxes(title='Seguidores nuevos')
 		fig.update_layout(title=f'@{user}')
 		path_img='plot.png'
