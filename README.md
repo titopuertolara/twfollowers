@@ -1,5 +1,5 @@
-# twfollowers
-
+# twfollowers \
+A dashboard used to track twitter accounts. \
 Requirements
 
 pip3 install dash\
